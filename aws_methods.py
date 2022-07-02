@@ -5,8 +5,8 @@ import os
 # ACCESS_KEY = 'AKIAY6KCSSCHL63PJUEF'
 # SECRET_KEY = 'JI9/i4jdBa764P4xGM6ZVAv0CyLFO6OAiXM8A6m'
 
-ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
-SECRET_KEY = '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'
+# ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
+# SECRET_KEY = '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'
 
 def download_file_aws(bucket_name,filename):
 	session = Session(aws_access_key_id=ACCESS_KEY,
