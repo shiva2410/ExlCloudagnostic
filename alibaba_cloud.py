@@ -26,10 +26,10 @@ def download(bucket_name,filepath):
         return 0
     return os.path.join(os.getcwd(),filepath) if ret.status==200 else 0 # returning path of current directory
 # temporary downloading functionality using file name and bucket name as parameter
-def download_temp(bucket_name,filepath):
+def download_temp(bucket_name,filepath,expiration_time):
     try:
         ret=bucket.get_object_to_file(filepath, filepath)
-        ret_link = bucket.sign_url('GET', filepath,60)  # The return value is the link, the parameters are in order, method/file path on oss/expiration time(s) which is 60 sec
+        ret_link = bucket.sign_url('GET', filepath,expiration_time)  # The return value is the link, the parameters are in order, method/file path on oss/expiration time(s) which is 60 sec
         type_tiny = pyshorteners.Shortener() #shortening link to protect data
         short_url = type_tiny.tinyurl.short(ret_link)
     except:
@@ -48,5 +48,5 @@ head, tail = os.path.split(mainpath)
 # print(tail)
 # print(upload(bucket_name,tail))
 # print(download(bucket_name,tail))
-# print(download_temp(bucket_name,tail))
+# print(download_temp(bucket_name,tail,60))
 # print(listall_objects(bucket_name))
