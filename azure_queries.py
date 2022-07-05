@@ -1,20 +1,23 @@
 import os
 from azure.storage.blob import BlobServiceClient, BlobClient
 from azure.storage.blob import ContentSettings, ContainerClient
- 
-MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=exltrinity;AccountKey=JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA==;EndpointSuffix=core.windows.net"
- 
-MY_FILE_CONTAINER = "myfiles"
+from azure.storage.blob import generate_blob_sas
+from azure.storage.blob import BlobSasPermissions
+from datetime import datetime, timedelta
+import pyshorteners
 
+# Add your Azure credentials here:
+
+# main_account_name = 'exltrinity'
+# main_account_key = 'JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA=='
+
+MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(main_account_name)+";AccountKey="+str(main_account_key)+";EndpointSuffix=core.windows.net"
 path = os.getcwd()
 LOCAL_BLOB_PATH = str(path)+ "/download"
 
-# LOCAL_FILE_PATH = str(path) + "/sample.jpeg"
-# BLOB_FILE_NAME = "sample.jpeg"
-
 blob_service_client =  BlobServiceClient.from_connection_string(MY_CONNECTION_STRING)
 
-def upload_file(localpath):
+def upload_file(MY_FILE_CONTAINER,localpath): # Function to upload files
     try:
         file_name = os.path.basename(localpath)
         blob_client = blob_service_client.get_blob_client(container=MY_FILE_CONTAINER, blob=file_name)
@@ -25,7 +28,7 @@ def upload_file(localpath):
     except:
         return "Something went wrong"
 
-def download_file(blobname):
+def download_file(MY_FILE_CONTAINER,blobname): # Function to download files for authorized users
     try:
         blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
         data = blob_client.get_blob_client(blobname).download_blob().readall()
@@ -36,7 +39,28 @@ def download_file(blobname):
     except:
         return "Something went wrong"
 
-def list_files():
+def download_file_temp(MY_FILE_CONTAINER,blobname,expirytime): # Function to download files temporarily for unauthorized users
+    try:
+        blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
+        blob_file = blob_client.get_blob_client(blobname)
+        perm_url = blob_file.url
+        sas_blob = generate_blob_sas(account_name= main_account_name, 
+                            container_name= MY_FILE_CONTAINER,
+                            blob_name= blobname,
+                            account_key= main_account_key,
+                            permission=BlobSasPermissions(read=True, write= False, create= False),
+                            expiry=datetime.utcnow() + timedelta(seconds=expirytime))
+        url_with_sas = f"{perm_url}?{sas_blob}"
+        try:
+            type_tiny = pyshorteners.Shortener()
+            short_url = type_tiny.tinyurl.short(url_with_sas)
+            return short_url
+        except:
+            return url_with_sas
+    except:
+        return "Something went wrong"
+
+def list_files(MY_FILE_CONTAINER): # Function to view files inside Container
     try:
         list_of_files=[]
         my_container = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
@@ -47,6 +71,7 @@ def list_files():
     except:
         return "Something went wrong"
 
-# print(upload_file(LOCAL_FILE_PATH))
-# print(download_file(BLOB_FILE_NAME))
-# print(list_files())
+# print(upload_file('myfiles', LOCAL_FILE_PATH))
+# print(download_file('myfiles', BLOB_FILE_NAME))
+# print(list_files('myfiles'))
+# print(download_file_temp('myfiles', 'sample.jpeg',20))
