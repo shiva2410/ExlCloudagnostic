@@ -2,7 +2,9 @@ from flask import Flask,abort,render_template,request,redirect,url_for,send_from
 import os
 import utils
 import json
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 # UPLOAD_FOLDER = 'uploads'
 # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER    #Uploading Files through website
 # if not os.path.exists(UPLOAD_FOLDER):

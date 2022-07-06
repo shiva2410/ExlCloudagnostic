@@ -11,10 +11,10 @@ ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
 SECRET_KEY = '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'
 
 def download_file_aws(bucket_name,filename):     #Function to Download files from AWS Bucket
-	session = Session(aws_access_key_id=ACCESS_KEY,
-	              aws_secret_access_key=SECRET_KEY)
-	s3 = session.resource('s3')
-	your_bucket = s3.Bucket('exlhackathon')
+	# session = Session(aws_access_key_id=ACCESS_KEY,
+	#               aws_secret_access_key=SECRET_KEY)
+	# s3 = session.resource('s3')
+	# your_bucket = s3.Bucket('exlhackathon')
 
 	s3 = boto3.client ('s3')
 	your_bucket.download_file(filename,filename)
@@ -24,7 +24,7 @@ def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS 
 	try:
 		session = Session(aws_access_key_id=ACCESS_KEY,
 	              aws_secret_access_key=SECRET_KEY)
-		s3 = session.resource('s3')
+		s3 = boto3.client('s3')
 		s3.meta.client.upload_file(Filename=Filename, Bucket=Bucket, Key=Filename)
 		return 'Success'
 	except Exception as e:
@@ -34,7 +34,7 @@ def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 	items=[]
 	session = Session(aws_access_key_id=ACCESS_KEY,
 	              aws_secret_access_key=SECRET_KEY)
-	s3 = session.resource('s3')
+	s3 = boto3.client('s3')
 	your_bucket = s3.Bucket('exlhackathon')
 
 	for s3_file in your_bucket.objects.all():
@@ -52,7 +52,7 @@ def download_temp_access(bucket_name,filename,expiration_time):  #Function to ge
 
 
 filename='kpmg.gif'
-bucket_name='exlhackathon'
+bucket_name='exltrinity'
 expiration_time=60
 # print(download_file_aws(bucket_name,filename))
 # print(upload_file_aws(bucket_name,filename))
