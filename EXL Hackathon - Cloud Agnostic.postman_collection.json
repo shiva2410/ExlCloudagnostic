@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "54bab301-16fa-47fa-baf4-1c36dd91c7b8",
+		"name": "EXL Hackathon - Cloud Agnostic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11869565"
+	},
+	"item": [
+		{
+			"name": "CloudAgnostic",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "cloud_provider",
+							"value": "aws",
+							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
+							"type": "text"
+						},
+						{
+							"key": "accesstype",
+							"value": "authorized",
+							"description": "Access Type - \"authorized\",\"unauthorized\"",
+							"type": "text"
+						},
+						{
+							"key": "bucket_name",
+							"value": "exltrinity",
+							"description": "bucket name of respective cloud storage",
+							"type": "text"
+						},
+						{
+							"key": "ufile",
+							"description": "upload file",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "featuretype",
+							"value": "listfiles",
+							"description": "functionality needed - \"upload\", \"download\", \"downloadtemp\", \"listfiles\"",
+							"type": "text"
+						},
+						{
+							"key": "file_download",
+							"value": "ctc_calculator.xlsx",
+							"description": "filename of the file to be downloaded",
+							"type": "text"
+						},
+						{
+							"key": "exptime",
+							"value": "60",
+							"description": "Expiration time for temporary download link",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.1.21:5200/cloudagnostic/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"1",
+						"21"
+					],
+					"port": "5200",
+					"path": [
+						"cloudagnostic",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
