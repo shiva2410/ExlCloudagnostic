@@ -8,8 +8,8 @@ import pyshorteners
 
 # Add your Azure credentials here:
 
-# main_account_name = 'exltrinity'
-# main_account_key = 'JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA=='
+main_account_name = 'exltrinity'
+main_account_key = 'JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA=='
 
 MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(main_account_name)+";AccountKey="+str(main_account_key)+";EndpointSuffix=core.windows.net"
 path = os.getcwd()
@@ -73,5 +73,5 @@ def list_files(MY_FILE_CONTAINER): # Function to view files inside Container
 
 # print(upload_file('myfiles', LOCAL_FILE_PATH))
 # print(download_file('myfiles', BLOB_FILE_NAME))
-# print(list_files('myfiles'))
+print(list_files('myfiles'))
 # print(download_file_temp('myfiles', 'sample.jpeg',20))

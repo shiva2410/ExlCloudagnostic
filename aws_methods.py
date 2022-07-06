@@ -7,8 +7,8 @@ type_tiny = pyshorteners.Shortener()
 # ACCESS_KEY = 'AKIAY6KCSSCHL63PJUEF'
 # SECRET_KEY = 'JI9/i4jdBa764P4xGM6ZVAv0CyLFO6OAiXM8A6m'
 
-# ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
-# SECRET_KEY = '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'
+ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
+SECRET_KEY = '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'
 
 def download_file_aws(bucket_name,filename):     #Function to Download files from AWS Bucket
 	session = Session(aws_access_key_id=ACCESS_KEY,
@@ -25,9 +25,6 @@ def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS 
 		session = Session(aws_access_key_id=ACCESS_KEY,
 	              aws_secret_access_key=SECRET_KEY)
 		s3 = session.resource('s3')
-		Filename='kpmg.gif'     
-		Bucket='exlhackathon'
-		Key="/uploads/" 
 		s3.meta.client.upload_file(Filename=Filename, Bucket=Bucket, Key=Filename)
 		return 'Success'
 	except Exception as e:
@@ -59,5 +56,5 @@ bucket_name='exlhackathon'
 expiration_time=60
 # print(download_file_aws(bucket_name,filename))
 # print(upload_file_aws(bucket_name,filename))
-# print(list_items_aws_bucket(bucket_name))
-print(download_temp_access(bucket_name,filename,expiration_time))
+print(list_items_aws_bucket(bucket_name))
+# print(download_temp_access(bucket_name,filename,expiration_time))

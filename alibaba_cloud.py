@@ -43,10 +43,10 @@ def listall_objects(bucket_name):
         objects_cloud.append(obj.key)
     return objects_cloud
 
-mainpath="E:/chalkboard/cloud/upload.jpeg"
-head, tail = os.path.split(mainpath)
+mainpath="/Users/shiva/Documents/practice_codes/ExlCloudagnostic/uploads/IMG_2454.PNG"
+# head, tail = os.path.split(mainpath)
 # print(tail)
-# print(upload(bucket_name,tail))
+print(upload(bucket_name,tail))
 # print(download(bucket_name,tail))
 # print(download_temp(bucket_name,tail,60))
 # print(listall_objects(bucket_name))
