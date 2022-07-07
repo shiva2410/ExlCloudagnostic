@@ -1,6 +1,8 @@
 from boto3.session import Session
 import boto3
 import os
+import logging
+from botocore.exceptions import ClientError
 import pyshorteners
 type_tiny = pyshorteners.Shortener()
 
@@ -16,29 +18,30 @@ def download_file_aws(bucket_name,filename):     #Function to Download files fro
 	# s3 = session.resource('s3')
 	# your_bucket = s3.Bucket('exlhackathon')
 
-	s3 = boto3.client ('s3')
-	your_bucket.download_file(filename,filename)
+	s3 = boto3.resource('s3')
+	try:
+		s3.Bucket(bucket_name).download_file(filename,filename)
+	except botocore.exceptions.ClientError as e:
+		if e.response['Error']['Code'] == "404":
+			print("The object does not exist.")
+		else:
+			raise
 	return os.path.join(os.getcwd(),filename)
 
 def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS Bucket
+	s3_client = boto3.client('s3')
 	try:
-		session = Session(aws_access_key_id=ACCESS_KEY,
-	              aws_secret_access_key=SECRET_KEY)
-		s3 = boto3.client('s3')
-		s3.meta.client.upload_file(Filename=Filename, Bucket=Bucket, Key=Filename)
-		return 'Success'
-	except Exception as e:
-		return e
+		response = s3_client.upload_file(filename, bucket_name, filename)
+	except ClientError as e:
+		logging.error(e)
+		return False
+	return 'Success'
 
 def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 	items=[]
-	session = Session(aws_access_key_id=ACCESS_KEY,
-	              aws_secret_access_key=SECRET_KEY)
 	s3 = boto3.client('s3')
-	your_bucket = s3.Bucket('exlhackathon')
-
-	for s3_file in your_bucket.objects.all():
-	    items.append(s3_file.key)
+	for key in s3.list_objects(Bucket=bucket_name)['Contents']:
+		items.append(key['Key'])
 	return items
 
 def download_temp_access(bucket_name,filename,expiration_time):  #Function to get temporary file download link
@@ -54,7 +57,7 @@ def download_temp_access(bucket_name,filename,expiration_time):  #Function to ge
 filename='kpmg.gif'
 bucket_name='exltrinity'
 expiration_time=60
-# print(download_file_aws(bucket_name,filename))
+print(download_file_aws(bucket_name,filename))
 # print(upload_file_aws(bucket_name,filename))
-print(list_items_aws_bucket(bucket_name))
+# print(list_items_aws_bucket(bucket_name))
 # print(download_temp_access(bucket_name,filename,expiration_time))

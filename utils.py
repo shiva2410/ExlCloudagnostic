@@ -8,6 +8,8 @@ from azure.storage.blob import generate_blob_sas
 from azure.storage.blob import BlobSasPermissions
 from datetime import datetime, timedelta
 import oss2
+import logging
+from botocore.exceptions import ClientError
 import os
 type_tiny = pyshorteners.Shortener()
 
@@ -31,34 +33,30 @@ endpoint = 'oss-ap-south-1.aliyuncs.com'
 # SECRET_KEY = 'w+MZl+DmZPd/RC6+CXJJDHMKhYy9dHIvDz3n6Id6'
 
 def download_file_aws(bucket_name,filename):     #Function to Download files from AWS Bucket
-	session = Session(aws_access_key_id=ACCESS_KEY,
-				  aws_secret_access_key=SECRET_KEY)
-	s3 = session.resource('s3')
-	your_bucket = s3.Bucket(bucket_name)
-
-	s3 = boto3.client ('s3')
-	your_bucket.download_file(filename,filename)
+	s3 = boto3.resource('s3')
+	try:
+	    s3.Bucket(bucket_name).download_file(filename,filename)
+	except botocore.exceptions.ClientError as e:
+	    if e.response['Error']['Code'] == "404":
+	        print("The object does not exist.")
+	    else:
+	        raise
 	return os.path.join(os.getcwd(),filename)
 
 def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS Bucket
-	try:
-		session = Session(aws_access_key_id=ACCESS_KEY,
-				  aws_secret_access_key=SECRET_KEY)
-		s3 = session.resource('s3')
-		s3.meta.client.upload_file(Filename=filename, Bucket=bucket_name, Key=filename)
-		return 'Success'
-	except Exception as e:
-		return e
+	s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(filename, bucket_name, filename)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return return 'Success'
 
 def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 	items=[]
-	session = Session(aws_access_key_id=ACCESS_KEY,
-				  aws_secret_access_key=SECRET_KEY)
-	s3 = session.resource('s3')
-	your_bucket = s3.Bucket(bucket_name)
-
-	for s3_file in your_bucket.objects.all():
-		items.append(s3_file.key)
+	s3 = boto3.client('s3')
+	for key in s3.list_objects(Bucket=bucket_name)['Contents']:
+		items.append(key['Key'])
 	return items
 
 def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to get temporary file download link
