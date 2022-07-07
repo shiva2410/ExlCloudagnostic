@@ -5,13 +5,16 @@ from azure.storage.blob import generate_blob_sas
 from azure.storage.blob import BlobSasPermissions
 from datetime import datetime, timedelta
 import pyshorteners
+import yaml
 
-# Add your Azure credentials here:
+# Open the file and load the file
+def load_config():
+    with open('config.yaml') as f:
+        return yaml.load(f, Loader=yaml.FullLoader)
 
-main_account_name = 'exltrinity'
-main_account_key = 'JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA=='
+config = load_config()
 
-MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(main_account_name)+";AccountKey="+str(main_account_key)+";EndpointSuffix=core.windows.net"
+MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(config["main_account_name"])+";AccountKey="+str(config["main_account_key"])+";EndpointSuffix=core.windows.net"
 path = os.getcwd()
 LOCAL_BLOB_PATH = str(path)+ "/download"
 
@@ -73,5 +76,5 @@ def list_files(MY_FILE_CONTAINER): # Function to view files inside Container
 
 # print(upload_file('myfiles', LOCAL_FILE_PATH))
 # print(download_file('myfiles', BLOB_FILE_NAME))
-print(list_files('myfiles'))
+# print(list_files('exltrinity'))
 # print(download_file_temp('myfiles', 'sample.jpeg',20))
