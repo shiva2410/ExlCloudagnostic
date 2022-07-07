@@ -13,9 +13,6 @@ from botocore.exceptions import ClientError
 import os
 type_tiny = pyshorteners.Shortener()
 
-ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
-SECRET_KEY = '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'  #AWS
-
 main_account_name = 'exltrinity'
 main_account_key = 'JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA==' #Azure
 
