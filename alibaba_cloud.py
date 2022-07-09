@@ -1,8 +1,10 @@
 import oss2
 import os
 import pyshorteners
-access_key_id = 'LTAI5tMMRGbFNaHsoC16c2dc'
-access_key_secret = 'kV8oIJaomxMSAmycOTbQiDTv59HliT'
+# access_key_id = 'LTAI5tMMRGbFNaHsoC16c2dc'
+# access_key_secret = 'kV8oIJaomxMSAmycOTbQiDTv59HliT'
+access_key_id=os.environ['access_key_id']
+access_key_secret=os.environ['access_key_secret']
 bucket_name = 'exltrinity'
 endpoint = 'oss-ap-south-1.aliyuncs.com' 
 # Create Object for this bucket
