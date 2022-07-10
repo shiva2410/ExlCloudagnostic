@@ -3,20 +3,18 @@ import os
 import utils
 import json
 from flask_cors import CORS
+import logging
 app = Flask(__name__)
 CORS(app)
+logging.basicConfig(level=logging.INFO)  #Setup logging level in the Flask APP 
 @app.route('/cloudagnostic/',methods = ['POST'])
 def cloud_agnostic():
     cloud_provider=request.form.get('cloud_provider')
-    print(cloud_provider)
     accesstype=request.form.get('accesstype')
-    print(accesstype)
     featuretype=request.form.get('featuretype')
-    print(featuretype)
     bucket_name=request.form.get('bucket_name')
-    print(bucket_name)
     try:
-        if featuretype=='upload':        # feature type for uploading files in the respective cloud buckets
+        if featuretype=='upload' and accesstype=="authorized":        # feature type for uploading files in the respective cloud buckets
             try:
                 if 'ufile' not in request.files:
                     return 'No file part'
@@ -38,7 +36,7 @@ def cloud_agnostic():
             except:
                 return 'Error occured', 501
 
-        elif featuretype=='download':  # feature type for downloading files from the respective cloud buckets
+        elif featuretype=='download' and accesstype=="authorized":  # feature type for downloading files from the respective cloud buckets
             try:
                 filename_download=request.get('file_download')
                 if cloud_provider=='aws':
@@ -54,7 +52,7 @@ def cloud_agnostic():
                 print(e)
                 return 'Error occured', 501
 
-        elif featuretype=='downloadtemp':  # feature type for creating temporary download link of files present in the respective cloud buckets
+        elif featuretype=='download' and accesstype=="unauthorized":  # feature type for creating temporary download link of files present in the respective cloud buckets
             try:
                 expiration_time=int(request.form.get('exptime'))
                 filename_download=request.form.get('file_download')
@@ -70,7 +68,7 @@ def cloud_agnostic():
             except:
                 return 'Error occured', 501
 
-        elif featuretype=='listfiles': # feature type for listing files present in the respective cloud buckets
+        elif featuretype=='listfiles' and accesstype=="authorized": # feature type for listing files present in the respective cloud buckets
             try:
                 if cloud_provider=='aws':
                     listoffiles= utils.list_items_aws_bucket(bucket_name)
