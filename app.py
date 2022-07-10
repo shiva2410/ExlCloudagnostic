@@ -5,12 +5,6 @@ import json
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
-# UPLOAD_FOLDER = 'uploads'
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER    #Uploading Files through website
-# if not os.path.exists(UPLOAD_FOLDER):
-#     os.makedirs(UPLOAD_FOLDER)
-
-
 @app.route('/cloudagnostic/',methods = ['POST'])
 def cloud_agnostic():
     cloud_provider=request.form.get('cloud_provider')
@@ -22,12 +16,11 @@ def cloud_agnostic():
     bucket_name=request.form.get('bucket_name')
     print(bucket_name)
     try:
-        if featuretype=='upload':
+        if featuretype=='upload':        # feature type for uploading files in the respective cloud buckets
             try:
                 if 'ufile' not in request.files:
                     return 'No file part'
                 file = request.files['ufile']
-                # print(file)
                 if file:
                     filename = file.filename
                     # location=UPLOAD_FOLDER+'/'+filename
@@ -45,7 +38,7 @@ def cloud_agnostic():
             except:
                 return 'Error occured', 501
 
-        elif featuretype=='download':
+        elif featuretype=='download':  # feature type for downloading files from the respective cloud buckets
             try:
                 filename_download=request.get('file_download')
                 if cloud_provider=='aws':
@@ -61,7 +54,7 @@ def cloud_agnostic():
                 print(e)
                 return 'Error occured', 501
 
-        elif featuretype=='downloadtemp':
+        elif featuretype=='downloadtemp':  # feature type for creating temporary download link of files present in the respective cloud buckets
             try:
                 expiration_time=int(request.form.get('exptime'))
                 filename_download=request.form.get('file_download')
@@ -77,7 +70,7 @@ def cloud_agnostic():
             except:
                 return 'Error occured', 501
 
-        elif featuretype=='listfiles':
+        elif featuretype=='listfiles': # feature type for listing files present in the respective cloud buckets
             try:
                 if cloud_provider=='aws':
                     listoffiles= utils.list_items_aws_bucket(bucket_name)

@@ -13,29 +13,36 @@ from botocore.exceptions import ClientError
 import os
 type_tiny = pyshorteners.Shortener()
 
-main_account_name = os.environ["azure_account_name"]
+"""
+Credentials Handling for AWS, Azure & Alibaba
+
+"""
+
+# AWS Credentials can be setup in the CLI using command - "AWS configure"
+
+main_account_name = os.environ["azure_account_name"]  #Azure
 main_account_key = os.environ["azure_account_key"]
+
+access_key_id=os.environ['alibaba_access_key_id']  #Alibaba
+access_key_secret=os.environ['alibaba_access_key_secret']
+
 
 MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(main_account_name)+";AccountKey="+str(main_account_key)+";EndpointSuffix=core.windows.net"
 path = os.getcwd()
 LOCAL_BLOB_PATH = str(path)
 blob_service_client =  BlobServiceClient.from_connection_string(MY_CONNECTION_STRING)
-
-# access_key_id = 'LTAI5tMMRGbFNaHsoC16c2dc'   #Alibaba
-# access_key_secret = 'kV8oIJaomxMSAmycOTbQiDTv59HliT'
-
-access_key_id=os.environ['access_key_id']  #Alibaba
-access_key_secret=os.environ['access_key_secret']
 endpoint = 'oss-ap-south-1.aliyuncs.com' 
-# bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name) # Create Alibaba Object for this bucket
 
-# ACCESS_KEY = 'AKIAY6KCSSCHCRJ7BGO4'
-# SECRET_KEY = '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'
+
+"""
+AWS METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
+
+"""
 
 def download_file_aws(bucket_name,filename):     #Function to Download files from AWS Bucket
-	s3 = boto3.resource('s3')
+	s3 = boto3.resource('s3')   # Creating session for s3 resource
 	try:
-	    s3.Bucket(bucket_name).download_file(filename,filename)
+	    s3.Bucket(bucket_name).download_file(filename,filename)  
 	except botocore.exceptions.ClientError as e:
 	    if e.response['Error']['Code'] == "404":
 	        print("The object does not exist.")
@@ -44,7 +51,7 @@ def download_file_aws(bucket_name,filename):     #Function to Download files fro
 	return os.path.join(os.getcwd(),filename)
 
 def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS Bucket
-	s3_client = boto3.client('s3')
+	s3_client = boto3.client('s3') # Creating session for s3 resource
     try:
         response = s3_client.upload_file(filename, bucket_name, filename)
     except ClientError as e:
@@ -54,13 +61,13 @@ def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS 
 
 def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 	items=[]
-	s3 = boto3.client('s3')
-	for key in s3.list_objects(Bucket=bucket_name)['Contents']:
+	s3 = boto3.client('s3') # Creating session for s3 resource
+	for key in s3.list_objects(Bucket=bucket_name)['Contents']:  #iterating in items present in a bucket
 		items.append(key['Key'])
 	return items
 
 def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to get temporary file download link
-	s3_client = boto3.client('s3')
+	s3_client = boto3.client('s3') # Creating session for s3 resource
 	long_url = s3_client.generate_presigned_url('get_object',Params={'Bucket': bucket_name, 'Key': filename},ExpiresIn=expiration_time)
 	try:
 		short_url = type_tiny.tinyurl.short(long_url)
@@ -69,7 +76,12 @@ def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to 
 		return long_url
 
 
-def upload_file_azure(MY_FILE_CONTAINER,localpath): # Function to upload files
+"""
+AZURE METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
+
+"""
+
+def upload_file_azure(MY_FILE_CONTAINER,localpath): # AZURE Function to upload files
 	try:
 		file_name = os.path.basename(localpath)
 		blob_client = blob_service_client.get_blob_client(container=MY_FILE_CONTAINER, blob=file_name)
@@ -80,7 +92,7 @@ def upload_file_azure(MY_FILE_CONTAINER,localpath): # Function to upload files
 	except:
 		return "Something went wrong"
 
-def download_file_azure(MY_FILE_CONTAINER,blobname): # Function to download files for authorized users
+def download_file_azure(MY_FILE_CONTAINER,blobname): # AZURE Function to download files for authorized users
 	try:
 		blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
 		data = blob_client.get_blob_client(blobname).download_blob().readall()
@@ -91,7 +103,7 @@ def download_file_azure(MY_FILE_CONTAINER,blobname): # Function to download file
 	except:
 		return "Something went wrong"
 
-def download_file_temp_azure(MY_FILE_CONTAINER,blobname,expirytime): # Function to download files temporarily for unauthorized users
+def download_file_temp_azure(MY_FILE_CONTAINER,blobname,expirytime): # AZURE Function to download files temporarily for unauthorized users
 	try:
 		blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
 		blob_file = blob_client.get_blob_client(blobname)
@@ -112,7 +124,7 @@ def download_file_temp_azure(MY_FILE_CONTAINER,blobname,expirytime): # Function 
 		print(e)
 		return "Something went wrong"
 
-def list_items_azure_bucket(MY_FILE_CONTAINER): # Function to view files inside Container
+def list_items_azure_bucket(MY_FILE_CONTAINER): # AZURE Function to view files inside Container
 	try:
 		list_of_files=[]
 		my_container = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
@@ -123,8 +135,13 @@ def list_items_azure_bucket(MY_FILE_CONTAINER): # Function to view files inside 
 	except Exception as e:
 		print(e)
 		return "Something went Wrong"
- 
-def upload_file_alibaba(bucket_name,mainpath):  # Upload the file using file name and bucket name as parameter
+
+ """
+ALIBABA METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
+
+"""
+
+def upload_file_alibaba(bucket_name,mainpath):  # ALIBABA Upload the file using file name and bucket name as parameter
 	bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name)
 	head, filepath = os.path.split(mainpath)
 	try:
@@ -136,7 +153,7 @@ def upload_file_alibaba(bucket_name,mainpath):  # Upload the file using file nam
 	except:
 		return "Upload correct file"
 
-def download_file_alibaba(bucket_name,filepath):  # Download the file using file name and bucket name as parameter
+def download_file_alibaba(bucket_name,filepath):  # ALIBABA Download the file using file name and bucket name as parameter
 	bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name)
 	try:
 		ret=bucket.get_object_to_file(filepath, filepath) # file downloaded to current directory
@@ -160,7 +177,7 @@ def download_file_temp_alibaba(bucket_name,filepath,expiration_time): # temporar
 		return 'Not able to generate link'
 
 
-def list_items_alibaba_bucket(bucket_name):  # list all the objects in the bucket using bucket name
+def list_items_alibaba_bucket(bucket_name):  # ALIBABA list all the objects in the bucket using bucket name
 	bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name)
 	objects_cloud=[]
 	for obj in oss2.ObjectIterator(bucket):
