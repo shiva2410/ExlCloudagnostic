@@ -68,11 +68,11 @@ def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 	return items
 
 def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to get temporary file download link
-	s3_client = boto3.client('s3') # Creating session for s3 resource
+	s3_client = boto3.client('s3') # Creating Cient session for s3 resource
 	try:
 		s3 = boto3.resource('s3')
 		if s3.Bucket(bucket_name) in s3.buckets.all():
-			s3.head_object(Bucket=bucket_name, Key=filename)
+			s3_client.head_object(Bucket=bucket_name, Key=filename)
 			long_url = s3_client.generate_presigned_url('get_object',Params={'Bucket': bucket_name, 'Key': filename},ExpiresIn=expiration_time)
 			print(long_url)
 			try:
