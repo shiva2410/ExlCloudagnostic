@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import oss2
 import logging
 from botocore.exceptions import ClientError
+import botocore
 import os
 type_tiny = pyshorteners.Shortener()
 
@@ -42,22 +43,22 @@ AWS METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY
 def download_file_aws(bucket_name,filename):     #Function to Download files from AWS Bucket
 	s3 = boto3.resource('s3')   # Creating session for s3 resource
 	try:
-	    s3.Bucket(bucket_name).download_file(filename,filename)  
+		s3.Bucket(bucket_name).download_file(filename,filename)  
 	except botocore.exceptions.ClientError as e:
-	    if e.response['Error']['Code'] == "404":
-	        print("The object does not exist.")
-	    else:
-	        raise
+		if e.response['Error']['Code'] == "404":
+			print("The object does not exist.")
+			return 'No such object found'
+		else:
+			raise
 	return os.path.join(os.getcwd(),filename)
 
 def upload_file_aws(bucket_name,filename):      #Function to Upload file to AWS Bucket
 	s3_client = boto3.client('s3') # Creating session for s3 resource
-    try:
-        response = s3_client.upload_file(filename, bucket_name, filename)
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return return 'Success'
+	try:
+		response = s3_client.upload_file(filename, bucket_name, filename)
+	except ClientError as e:
+		logging.error(e)
+		return False
 
 def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 	items=[]
@@ -68,13 +69,21 @@ def list_items_aws_bucket(bucket_name): # prints the contents of bucket
 
 def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to get temporary file download link
 	s3_client = boto3.client('s3') # Creating session for s3 resource
-	long_url = s3_client.generate_presigned_url('get_object',Params={'Bucket': bucket_name, 'Key': filename},ExpiresIn=expiration_time)
 	try:
-		short_url = type_tiny.tinyurl.short(long_url)
-		return short_url
-	except:
-		return long_url
-
+		s3 = boto3.resource('s3')
+		if s3.Bucket(bucket_name) in s3.buckets.all():
+			long_url = s3_client.generate_presigned_url('get_object',Params={'Bucket': bucket_name, 'Key': filename},ExpiresIn=expiration_time)
+			print(long_url)
+			try:
+				short_url = type_tiny.tinyurl.short(long_url)
+				return short_url
+			except:
+				return long_url
+		else:
+			return 'No such object found'
+	except Exception as e:
+		print(e)
+		return 'No such object found'
 
 """
 AZURE METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
@@ -101,7 +110,7 @@ def download_file_azure(MY_FILE_CONTAINER,blobname): # AZURE Function to downloa
 			file.write(data)
 		return download_file_path
 	except:
-		return "Something went wrong"
+		return 'No such object found'
 
 def download_file_temp_azure(MY_FILE_CONTAINER,blobname,expirytime): # AZURE Function to download files temporarily for unauthorized users
 	try:
@@ -122,7 +131,7 @@ def download_file_temp_azure(MY_FILE_CONTAINER,blobname,expirytime): # AZURE Fun
 			return url_with_sas
 	except Exception as e:
 		print(e)
-		return "Something went wrong"
+		return 'No such object found'
 
 def list_items_azure_bucket(MY_FILE_CONTAINER): # AZURE Function to view files inside Container
 	try:
@@ -136,7 +145,7 @@ def list_items_azure_bucket(MY_FILE_CONTAINER): # AZURE Function to view files i
 		print(e)
 		return "Something went Wrong"
 
- """
+"""
 ALIBABA METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
 
 """
@@ -158,7 +167,7 @@ def download_file_alibaba(bucket_name,filepath):  # ALIBABA Download the file us
 	try:
 		ret=bucket.get_object_to_file(filepath, filepath) # file downloaded to current directory
 	except:
-		return 0
+		return 'No such object found'
 	return os.path.join(os.getcwd(),filepath) if ret.status==200 else 0 # returning path of current directory
 
 def download_file_temp_alibaba(bucket_name,filepath,expiration_time): # temporary downloading functionality using file name and bucket name as parameter
@@ -174,7 +183,7 @@ def download_file_temp_alibaba(bucket_name,filepath,expiration_time): # temporar
 			return ret_link
 	except Exception as e:
 		print(e)
-		return 'Not able to generate link'
+		return 'No such object found'
 
 
 def list_items_alibaba_bucket(bucket_name):  # ALIBABA list all the objects in the bucket using bucket name

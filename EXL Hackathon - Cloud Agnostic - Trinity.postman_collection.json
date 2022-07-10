@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "879a8ffb-7dab-467d-978d-f43012e4e951",
+		"_postman_id": "55316993-65fa-44b5-9f9f-2939186f3c22",
 		"name": "EXL Hackathon - Cloud Agnostic - Trinity",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18597875"
+		"_exporter_id": "11869565"
 	},
 	"item": [
 		{
@@ -28,7 +28,7 @@
 						},
 						{
 							"key": "cloud_provider",
-							"value": "azure",
+							"value": "aws",
 							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
 							"type": "text"
 						},
@@ -42,18 +42,18 @@
 							"key": "ufile",
 							"description": "Upload file",
 							"type": "file",
-							"src": []
+							"src": "/Users/shiva/Downloads/test1.png"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"raw": "http://0.0.0.0:5200/cloudagnostic/",
 					"protocol": "http",
 					"host": [
-						"192",
-						"168",
-						"29",
-						"68"
+						"0",
+						"0",
+						"0",
+						"0"
 					],
 					"port": "5200",
 					"path": [
@@ -86,7 +86,7 @@
 						},
 						{
 							"key": "cloud_provider",
-							"value": "azure",
+							"value": "alibaba",
 							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
 							"type": "text"
 						},
@@ -105,13 +105,13 @@
 					]
 				},
 				"url": {
-					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"raw": "http://0.0.0.0:5200/cloudagnostic/",
 					"protocol": "http",
 					"host": [
-						"192",
-						"168",
-						"29",
-						"68"
+						"0",
+						"0",
+						"0",
+						"0"
 					],
 					"port": "5200",
 					"path": [
@@ -156,26 +156,26 @@
 						},
 						{
 							"key": "file_download",
-							"value": "sample.jpeg",
+							"value": "saa.png",
 							"description": "Filename of the file to be downloaded",
 							"type": "text"
 						},
 						{
 							"key": "exptime",
-							"value": "60",
+							"value": "30",
 							"description": "Expiration time for temporary download link (in sec)",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"raw": "http://0.0.0.0:5200/cloudagnostic/",
 					"protocol": "http",
 					"host": [
-						"192",
-						"168",
-						"29",
-						"68"
+						"0",
+						"0",
+						"0",
+						"0"
 					],
 					"port": "5200",
 					"path": [
@@ -221,13 +221,13 @@
 					]
 				},
 				"url": {
-					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"raw": "http://0.0.0.0:5200/cloudagnostic/",
 					"protocol": "http",
 					"host": [
-						"192",
-						"168",
-						"29",
-						"68"
+						"0",
+						"0",
+						"0",
+						"0"
 					],
 					"port": "5200",
 					"path": [
