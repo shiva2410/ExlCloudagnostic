@@ -38,7 +38,7 @@ def cloud_agnostic():
 
 		elif featuretype=='download' and accesstype=="authorized":  # feature type for downloading files from the respective cloud buckets
 			try:
-				filename_download=request.form.get('file_download')
+				filename_download=request.form.get('file_name')
 				if cloud_provider=='aws':
 					file_path=utils.download_file_aws(bucket_name,filename_download)
 				elif cloud_provider=='azure':
@@ -54,11 +54,24 @@ def cloud_agnostic():
 			except Exception as e:
 				print(e)
 				return 'Error occured', 501
+		elif featuretype=='delete' and accesstype=="authorized":  # feature type for deleting files from the respective cloud buckets
+			try:
+				filename_download=request.form.get('file_name')
+				if cloud_provider=='aws':
+					utils.delete_file_aws(bucket_name,filename_download)
+				elif cloud_provider=='azure':
+					utils.delete_file_azure(bucket_name,filename_download)
+				elif cloud_provider=='alibaba':
+					utils.delete_file_alibaba(bucket_name,filename_download)
+				return Response('File Deleted successfully',200)
+			except Exception as e:
+				print(e)
+				return 'Error occured - File or Bucket does not exist', 404
 
 		elif featuretype=='download' and accesstype=="unauthorized":  # feature type for creating temporary download link of files present in the respective cloud buckets
 			try:
 				expiration_time=int(request.form.get('exptime'))
-				filename_download=request.form.get('file_download')
+				filename_download=request.form.get('file_name')
 				if cloud_provider=='aws':
 					file_url=utils.download_file_temp_aws(bucket_name,filename_download,expiration_time)
 				elif cloud_provider=='azure':

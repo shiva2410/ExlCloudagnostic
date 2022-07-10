@@ -72,6 +72,7 @@ def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to 
 	try:
 		s3 = boto3.resource('s3')
 		if s3.Bucket(bucket_name) in s3.buckets.all():
+			s3.head_object(Bucket=bucket_name, Key=filename)
 			long_url = s3_client.generate_presigned_url('get_object',Params={'Bucket': bucket_name, 'Key': filename},ExpiresIn=expiration_time)
 			print(long_url)
 			try:
@@ -85,6 +86,9 @@ def download_file_temp_aws(bucket_name,filename,expiration_time):  #Function to 
 		print(e)
 		return 'No such object found'
 
+def delete_file_aws(bucket_name,filename): #Function to delete file from AWS Bucket
+	client = boto3.client('s3')
+	client.delete_object(Bucket=bucket_name, Key=filename)
 """
 AZURE METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
 
@@ -147,6 +151,10 @@ def list_items_azure_bucket(MY_FILE_CONTAINER): # AZURE Function to view files i
 		list_of_files.append(blob.name)
 	return list_of_files
 
+def delete_file(MY_FILE_CONTAINER,blobname): # AZURE Function to delete files inside Container
+	blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
+	blob_client.delete_blob(blob=blobname)
+
 """
 ALIBABA METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
 
@@ -195,3 +203,6 @@ def list_items_alibaba_bucket(bucket_name):  # ALIBABA list all the objects in t
 		objects_cloud.append(obj.key)
 	return objects_cloud
 
+def delete_file_alibaba(bucket_name,filename):  #Function to delete file from Alibaba Bucket
+	bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name)
+	bucket.delete_object(filename)
