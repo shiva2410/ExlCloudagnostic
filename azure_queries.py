@@ -5,16 +5,12 @@ from azure.storage.blob import generate_blob_sas
 from azure.storage.blob import BlobSasPermissions
 from datetime import datetime, timedelta
 import pyshorteners
-import yaml
 
-# Open the file and load the file
-def load_config():
-    with open('config.yaml') as f:
-        return yaml.load(f, Loader=yaml.FullLoader)
+# Get values of environment variables
+main_account_name = os.environ["azure_account_name"]
+main_account_key = os.environ["azure_account_key"]
 
-config = load_config()
-
-MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(config["main_account_name"])+";AccountKey="+str(config["main_account_key"])+";EndpointSuffix=core.windows.net"
+MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(main_account_name)+";AccountKey="+str(main_account_key)+";EndpointSuffix=core.windows.net"
 path = os.getcwd()
 LOCAL_BLOB_PATH = str(path)+ "/download"
 
