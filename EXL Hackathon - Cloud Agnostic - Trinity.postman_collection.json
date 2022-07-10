@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "f8df70c5-5d89-4de0-af85-9192213e7d95",
+		"_postman_id": "7a1c5b58-ea75-40dc-90ec-e4245e0dd817",
 		"name": "EXL Hackathon - Cloud Agnostic - Trinity",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18597875"
+		"_exporter_id": "11869565"
 	},
 	"item": [
 		{
@@ -17,7 +17,7 @@
 						{
 							"key": "featuretype",
 							"value": "upload",
-							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\";\"delete\"",
 							"type": "text"
 						},
 						{
@@ -42,7 +42,7 @@
 							"key": "ufile",
 							"description": "Upload file",
 							"type": "file",
-							"src": "/Users/shiva/Downloads/test1.png"
+							"src": []
 						}
 					]
 				},
@@ -75,7 +75,7 @@
 						{
 							"key": "featuretype",
 							"value": "download",
-							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\";\"delete\"",
 							"type": "text"
 						},
 						{
@@ -86,7 +86,7 @@
 						},
 						{
 							"key": "cloud_provider",
-							"value": "alibaba",
+							"value": "aws",
 							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
 							"type": "text"
 						},
@@ -97,7 +97,65 @@
 							"type": "text"
 						},
 						{
-							"key": "file_download",
+							"key": "file_name",
+							"value": "sample.jpeg",
+							"description": "Filename of the file to be downloaded",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:5200/cloudagnostic/",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "5200",
+					"path": [
+						"cloudagnostic",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "featuretype",
+							"value": "delete",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\";\"delete\"",
+							"type": "text"
+						},
+						{
+							"key": "accesstype",
+							"value": "authorized",
+							"description": "Access Type - \"authorized\",\"unauthorized\"",
+							"type": "text"
+						},
+						{
+							"key": "cloud_provider",
+							"value": "aws",
+							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
+							"type": "text"
+						},
+						{
+							"key": "bucket_name",
+							"value": "exltrinity",
+							"description": "Bucket name of respective cloud storage",
+							"type": "text"
+						},
+						{
+							"key": "file_name",
 							"value": "sample.jpeg",
 							"description": "Filename of the file to be downloaded",
 							"type": "text"
@@ -133,7 +191,7 @@
 						{
 							"key": "featuretype",
 							"value": "download",
-							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\";\"delete\"",
 							"type": "text"
 						},
 						{
@@ -144,7 +202,7 @@
 						},
 						{
 							"key": "cloud_provider",
-							"value": "azure",
+							"value": "aws",
 							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
 							"type": "text"
 						},
@@ -155,8 +213,8 @@
 							"type": "text"
 						},
 						{
-							"key": "file_download",
-							"value": "saa.png",
+							"key": "file_name",
+							"value": "sample.jpeg",
 							"description": "Filename of the file to be downloaded",
 							"type": "text"
 						},
@@ -197,7 +255,7 @@
 						{
 							"key": "featuretype",
 							"value": "listfiles",
-							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\";\"delete\"",
 							"type": "text"
 						},
 						{
@@ -208,7 +266,7 @@
 						},
 						{
 							"key": "cloud_provider",
-							"value": "azure",
+							"value": "aws",
 							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
 							"type": "text"
 						},

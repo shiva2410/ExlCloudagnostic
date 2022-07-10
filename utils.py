@@ -151,7 +151,7 @@ def list_items_azure_bucket(MY_FILE_CONTAINER): # AZURE Function to view files i
 		list_of_files.append(blob.name)
 	return list_of_files
 
-def delete_file(MY_FILE_CONTAINER,blobname): # AZURE Function to delete files inside Container
+def delete_file_azure(MY_FILE_CONTAINER,blobname): # AZURE Function to delete files inside Container
 	blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
 	blob_client.delete_blob(blob=blobname)
 
