@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "879a8ffb-7dab-467d-978d-f43012e4e951",
+		"name": "EXL Hackathon - Cloud Agnostic - Trinity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18597875"
+	},
+	"item": [
+		{
+			"name": "Upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "featuretype",
+							"value": "upload",
+							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"type": "text"
+						},
+						{
+							"key": "accesstype",
+							"value": "authorized",
+							"description": "Access Type - \"authorized\",\"unauthorized\"",
+							"type": "text"
+						},
+						{
+							"key": "cloud_provider",
+							"value": "azure",
+							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
+							"type": "text"
+						},
+						{
+							"key": "bucket_name",
+							"value": "exltrinity",
+							"description": "Bucket name of respective cloud storage",
+							"type": "text"
+						},
+						{
+							"key": "ufile",
+							"description": "Upload file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"29",
+						"68"
+					],
+					"port": "5200",
+					"path": [
+						"cloudagnostic",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "featuretype",
+							"value": "download",
+							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"type": "text"
+						},
+						{
+							"key": "accesstype",
+							"value": "authorized",
+							"description": "Access Type - \"authorized\",\"unauthorized\"",
+							"type": "text"
+						},
+						{
+							"key": "cloud_provider",
+							"value": "azure",
+							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
+							"type": "text"
+						},
+						{
+							"key": "bucket_name",
+							"value": "exltrinity",
+							"description": "Bucket name of respective cloud storage",
+							"type": "text"
+						},
+						{
+							"key": "file_download",
+							"value": "sample.jpeg",
+							"description": "Filename of the file to be downloaded",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"29",
+						"68"
+					],
+					"port": "5200",
+					"path": [
+						"cloudagnostic",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Temporarily",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "featuretype",
+							"value": "download",
+							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"type": "text"
+						},
+						{
+							"key": "accesstype",
+							"value": "unauthorized",
+							"description": "Access Type - \"authorized\",\"unauthorized\"",
+							"type": "text"
+						},
+						{
+							"key": "cloud_provider",
+							"value": "azure",
+							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
+							"type": "text"
+						},
+						{
+							"key": "bucket_name",
+							"value": "exltrinity",
+							"description": "Bucket name of respective cloud storage",
+							"type": "text"
+						},
+						{
+							"key": "file_download",
+							"value": "sample.jpeg",
+							"description": "Filename of the file to be downloaded",
+							"type": "text"
+						},
+						{
+							"key": "exptime",
+							"value": "60",
+							"description": "Expiration time for temporary download link (in sec)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"29",
+						"68"
+					],
+					"port": "5200",
+					"path": [
+						"cloudagnostic",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "featuretype",
+							"value": "listfiles",
+							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"type": "text"
+						},
+						{
+							"key": "accesstype",
+							"value": "authorized",
+							"description": "Access Type - \"authorized\",\"unauthorized\"",
+							"type": "text"
+						},
+						{
+							"key": "cloud_provider",
+							"value": "azure",
+							"description": "Provide cloud provider - \"aws\",\"azure\",\"alibaba\"",
+							"type": "text"
+						},
+						{
+							"key": "bucket_name",
+							"value": "exltrinity",
+							"description": "Bucket name of respective cloud storage",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.29.68:5200/cloudagnostic/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"29",
+						"68"
+					],
+					"port": "5200",
+					"path": [
+						"cloudagnostic",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
