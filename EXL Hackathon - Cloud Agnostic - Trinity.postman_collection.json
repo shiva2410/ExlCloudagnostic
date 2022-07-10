@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "55316993-65fa-44b5-9f9f-2939186f3c22",
+		"_postman_id": "f8df70c5-5d89-4de0-af85-9192213e7d95",
 		"name": "EXL Hackathon - Cloud Agnostic - Trinity",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "11869565"
+		"_exporter_id": "18597875"
 	},
 	"item": [
 		{
@@ -17,7 +17,7 @@
 						{
 							"key": "featuretype",
 							"value": "upload",
-							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
 							"type": "text"
 						},
 						{
@@ -75,7 +75,7 @@
 						{
 							"key": "featuretype",
 							"value": "download",
-							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
 							"type": "text"
 						},
 						{
@@ -133,7 +133,7 @@
 						{
 							"key": "featuretype",
 							"value": "download",
-							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
 							"type": "text"
 						},
 						{
@@ -197,7 +197,7 @@
 						{
 							"key": "featuretype",
 							"value": "listfiles",
-							"description": "Functionality - \"upload\",\"download\",\"downloadtemp\",\"listfiles\"",
+							"description": "Functionality - \"upload\",\"download\",\"listfiles\"",
 							"type": "text"
 						},
 						{

@@ -115,35 +115,37 @@ def download_file_azure(MY_FILE_CONTAINER,blobname): # AZURE Function to downloa
 def download_file_temp_azure(MY_FILE_CONTAINER,blobname,expirytime): # AZURE Function to download files temporarily for unauthorized users
 	try:
 		blob_client = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
-		blob_file = blob_client.get_blob_client(blobname)
-		perm_url = blob_file.url
-		sas_blob = generate_blob_sas(account_name= main_account_name, 
-							container_name= MY_FILE_CONTAINER,
-							blob_name= blobname,
-							account_key= main_account_key,
-							permission=BlobSasPermissions(read=True, write= False, create= False),
-							expiry=datetime.utcnow() + timedelta(seconds=expirytime))
-		url_with_sas = f"{perm_url}?{sas_blob}"
-		try:
-			short_url = type_tiny.tinyurl.short(url_with_sas)
-			return short_url
-		except:
-			return url_with_sas
+		if blob_client.exists() != False:
+			blob_file = blob_client.get_blob_client(blobname)
+			if blob_file.exists() != False:
+				perm_url = blob_file.url
+				sas_blob = generate_blob_sas(account_name= main_account_name, 
+									container_name= MY_FILE_CONTAINER,
+									blob_name= blobname,
+									account_key= main_account_key,
+									permission=BlobSasPermissions(read=True, write= False, create= False),
+									expiry=datetime.utcnow() + timedelta(seconds=expirytime))
+				url_with_sas = f"{perm_url}?{sas_blob}"
+				try:
+					short_url = type_tiny.tinyurl.short(url_with_sas)
+					return short_url
+				except:
+					return url_with_sas
+			else:
+				return 'No such object found'
+		else:
+			return 'No such object found'
 	except Exception as e:
 		print(e)
 		return 'No such object found'
 
 def list_items_azure_bucket(MY_FILE_CONTAINER): # AZURE Function to view files inside Container
-	try:
-		list_of_files=[]
-		my_container = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
-		my_blobs = my_container.list_blobs()
-		for blob in my_blobs:
-			list_of_files.append(blob.name)
-		return list_of_files
-	except Exception as e:
-		print(e)
-		return "Something went Wrong"
+	list_of_files=[]
+	my_container = blob_service_client.get_container_client(container= MY_FILE_CONTAINER)
+	my_blobs = my_container.list_blobs()
+	for blob in my_blobs:
+		list_of_files.append(blob.name)
+	return list_of_files
 
 """
 ALIBABA METHODS TO UPLOAD, LIST FILES IN A BUCKET, DOWNLOAD FILES & CREATE TEMPORARY DOWNLOAD LINK OF FILES
