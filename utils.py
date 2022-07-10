@@ -13,16 +13,19 @@ from botocore.exceptions import ClientError
 import os
 type_tiny = pyshorteners.Shortener()
 
-main_account_name = 'exltrinity'
-main_account_key = 'JyH+zU96WW39aL2BeXk20MGj1f1hyeoEzT0qzDqeEVr0dGiqnewYfEOk/VUt01YWi/Yus81IHW+2+AStiKmUnA==' #Azure
+main_account_name = os.environ["azure_account_name"]
+main_account_key = os.environ["azure_account_key"]
 
 MY_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName="+str(main_account_name)+";AccountKey="+str(main_account_key)+";EndpointSuffix=core.windows.net"
 path = os.getcwd()
 LOCAL_BLOB_PATH = str(path)
 blob_service_client =  BlobServiceClient.from_connection_string(MY_CONNECTION_STRING)
 
-access_key_id = 'LTAI5tMMRGbFNaHsoC16c2dc'   #Alibaba
-access_key_secret = 'kV8oIJaomxMSAmycOTbQiDTv59HliT'
+# access_key_id = 'LTAI5tMMRGbFNaHsoC16c2dc'   #Alibaba
+# access_key_secret = 'kV8oIJaomxMSAmycOTbQiDTv59HliT'
+
+access_key_id=os.environ['access_key_id']  #Alibaba
+access_key_secret=os.environ['access_key_secret']
 endpoint = 'oss-ap-south-1.aliyuncs.com' 
 # bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name) # Create Alibaba Object for this bucket
 
